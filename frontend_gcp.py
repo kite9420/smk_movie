@@ -46,7 +46,7 @@ def start_backend():
             stderr=subprocess.PIPE
         )
         # 서버가 완전히 뜰 때까지 잠시 대기
-        time.sleep(3)
+        time.sleep(5)
         return proc
     return None
 
@@ -62,7 +62,7 @@ st.title("🎬 영화 평점")
 # FastAPI 연동 함수
 # =========================
 
-BASE_API_URL = "http://localhost:8000/"
+BASE_API_URL = "http://127.0.0.1:8000/" #로컬과 다른 차이점
 
 def get_reviews_api(movie_id):
     try:
