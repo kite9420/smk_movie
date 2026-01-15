@@ -6,6 +6,8 @@ from datetime import date
 import subprocess
 import time
 import os
+import json
+
 
 
 #구현 예정 기능
@@ -41,10 +43,14 @@ def start_backend():
     if os.path.exists(backend_path):
         # uvicorn을 백그라운드 프로세스로 실행
         proc = subprocess.Popen(
-            ["python", "-m", "uvicorn", "backend.main_gcp:app", "--host", "127.0.0.1", "--port", "8000"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
+    ["python", "-m", "uvicorn", "backend.main_gcp:app", "--host", "127.0.0.1", "--port", "8000"],
+    env={
+        **os.environ,
+        "GCP_SERVICE_ACCOUNT": json.dumps(st.secrets["gcp_service_account"])
+    },
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE
+)
         # 서버가 완전히 뜰 때까지 잠시 대기
         time.sleep(10)
         return proc

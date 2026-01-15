@@ -2,20 +2,16 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from google.cloud import storage
 from google.oauth2 import service_account
-import streamlit as st
 import json
 import os
 from typing import List
 
 app = FastAPI()
 
-
 def get_gcs_client():
-    creds = service_account.Credentials.from_service_account_info(
-        st.secrets["gcp_service_account"]
-    )
+    creds_info = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
+    creds = service_account.Credentials.from_service_account_info(creds_info)
     return storage.Client(credentials=creds)
-
 
 client = get_gcs_client()
 BUCKET_NAME = "smk_main_home"
