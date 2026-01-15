@@ -37,7 +37,7 @@ st.title("🎬 영화 평점")
 # FastAPI 연동 함수
 # =========================
 
-BASE_API_URL = "https://smk-main-api-1060166419887.asia-northeast3.run.app" #로컬과 다른 차이점
+BASE_API_URL = "https://smk-main-api-1060166419887.asia-northeast3.run.app/" #로컬과 다른 차이점
 
 def get_reviews_api(movie_id):
     try:
@@ -56,7 +56,7 @@ def save_movie_api(movie):
 
 def get_movies_api():
     try:
-        response = requests.get(f"{BASE_API_URL}/movies",timeout=5)
+        response = requests.get(f"{BASE_API_URL}movies",timeout=5)
         if response.status_code == 200:
             return response.json()
         return []
