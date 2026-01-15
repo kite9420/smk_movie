@@ -1,39 +1,30 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from google.cloud import storage
+from google.oauth2 import service_account
 import json
 import os
-from typing import List, Optional
-import streamlit as st
-import json
-from google.oauth2 import service_account
+from typing import List
 
 app = FastAPI()
 
-# 1. 스트림릿 Secrets(클라우드)에 키 정보가 있는지 먼저 확인
-if "gcp_service_account" in st.secrets:
-    # [클라우드 환경] Secrets에 저장한 JSON 내용을 읽어와서 인증
-    info = dict(st.secrets["gcp_service_account"])
-    credentials = service_account.Credentials.from_service_account_info(info)
-    client = storage.Client(credentials=credentials)
-    print("✅ 스트림릿 Secrets를 통해 GCP 연결 성공!")
-else:
-    # [로컬 환경] 기존처럼 내 컴퓨터의 JSON 파일을 사용
+
+def get_gcs_client():
+    # 로컬용 키 파일 경로
     OS_AUTH_KEY = "backend/sprintmission18backend-34b4ac021f8f.json"
+    
+    # 1. 로컬에 파일이 있으면 파일을 써서 인증
     if os.path.exists(OS_AUTH_KEY):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = OS_AUTH_KEY
-        client = storage.Client()
-        print("✅ 로컬 JSON 파일을 통해 GCP 연결 성공!")
-    else:
-        print(f"❌ GCP 키를 찾을 수 없습니다. (Secrets 없음 & 파일 없음)")
+        return storage.Client.from_service_account_json(OS_AUTH_KEY)
+    
+    # 2. 클라우드(스트림릿)라면 시스템 환경변수를 써서 자동 인증
+    # (Secrets에 넣은 정보는 구글 라이브러리가 자동으로 찾아냅니다)
+    return storage.Client()
 
+client = get_gcs_client()
 BUCKET_NAME = "smk_main_home"
-try:
-    client
-except NameError:
-    client = storage.Client()
-
 bucket = client.bucket(BUCKET_NAME)
+
 # 2. 데이터 모델 정의
 class Movie(BaseModel):
     id: int

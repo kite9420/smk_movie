@@ -41,12 +41,12 @@ def start_backend():
     if os.path.exists(backend_path):
         # uvicorn을 백그라운드 프로세스로 실행
         proc = subprocess.Popen(
-            ["uvicorn", "backend.main_gcp:app", "--host", "0.0.0.0", "--port", "8000"],
+            ["python", "-m", "uvicorn", "backend.main_gcp:app", "--host", "127.0.0.1", "--port", "8000"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
         )
         # 서버가 완전히 뜰 때까지 잠시 대기
-        time.sleep(5)
+        time.sleep(10)
         return proc
     return None
 
@@ -66,7 +66,7 @@ BASE_API_URL = "http://127.0.0.1:8000/" #로컬과 다른 차이점
 
 def get_reviews_api(movie_id):
     try:
-        response = requests.get(f"{BASE_API_URL}movies/{movie_id}/reviews", timeout=3)
+        response = requests.get(f"{BASE_API_URL}movies/{movie_id}/reviews", timeout=5)
         return response.json() if response.status_code == 200 else []
     except:
         return []
@@ -74,14 +74,14 @@ def get_reviews_api(movie_id):
     
 def save_movie_api(movie):
     try:
-        response = requests.post(f"{BASE_API_URL}movies", json=movie, timeout=3)
+        response = requests.post(f"{BASE_API_URL}movies", json=movie, timeout=5)
         return response.status_code == 200
     except:
         return False
 
 def get_movies_api():
     try:
-        response = requests.get(f"{BASE_API_URL}/movies",timeout=3)
+        response = requests.get(f"{BASE_API_URL}/movies",timeout=5)
         if response.status_code == 200:
             return response.json()
         return []
@@ -97,7 +97,7 @@ def save_review_api(movie_id, author, content, score):
         "score": score
     }
     # POST로 백엔드 /reviews에 저장
-    requests.post(f"{BASE_API_URL}reviews", json=review_data)
+    requests.post(f"{BASE_API_URL}reviews", json=review_data, timeout=5)
 
 
 # =========================
