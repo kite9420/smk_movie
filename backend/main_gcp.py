@@ -11,19 +11,11 @@ app = FastAPI()
 
 
 def get_gcs_client():
-    # Streamlit Cloud용
-    if "gcp_service_account" in st.secrets:
-        creds = service_account.Credentials.from_service_account_info(
-            st.secrets["gcp_service_account"]
-        )
-        return storage.Client(credentials=creds)
+    creds = service_account.Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"]
+    )
+    return storage.Client(credentials=creds)
 
-    # 로컬용
-    OS_AUTH_KEY = "backend/sprintmission18backend-34b4ac021f8f.json"
-    if os.path.exists(OS_AUTH_KEY):
-        return storage.Client.from_service_account_json(OS_AUTH_KEY)
-
-    raise RuntimeError("GCP 인증 정보를 찾을 수 없습니다.")
 
 client = get_gcs_client()
 BUCKET_NAME = "smk_main_home"
