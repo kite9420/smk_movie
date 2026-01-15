@@ -1,0 +1,7 @@
+# GCP 서비스 계정 키 (절대 업로드 금지)
+backend/*.json
+
+# 가상환경 및 캐시
+venv/
+__pycache__/
+.streamlit/
