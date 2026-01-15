@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from google.cloud import storage
 from google.oauth2 import service_account
+import streamlit as st
 import json
 import os
 from typing import List
@@ -10,16 +11,19 @@ app = FastAPI()
 
 
 def get_gcs_client():
-    # 로컬용 키 파일 경로
+    # Streamlit Cloud용
+    if "gcp_service_account" in st.secrets:
+        creds = service_account.Credentials.from_service_account_info(
+            st.secrets["gcp_service_account"]
+        )
+        return storage.Client(credentials=creds)
+
+    # 로컬용
     OS_AUTH_KEY = "backend/sprintmission18backend-34b4ac021f8f.json"
-    
-    # 1. 로컬에 파일이 있으면 파일을 써서 인증
     if os.path.exists(OS_AUTH_KEY):
         return storage.Client.from_service_account_json(OS_AUTH_KEY)
-    
-    # 2. 클라우드(스트림릿)라면 시스템 환경변수를 써서 자동 인증
-    # (Secrets에 넣은 정보는 구글 라이브러리가 자동으로 찾아냅니다)
-    return storage.Client()
+
+    raise RuntimeError("GCP 인증 정보를 찾을 수 없습니다.")
 
 client = get_gcs_client()
 BUCKET_NAME = "smk_main_home"
