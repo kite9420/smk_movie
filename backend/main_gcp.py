@@ -1,23 +1,20 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
 from google.cloud import storage
-from google.oauth2 import service_account
-import json
-import os
 from typing import List
+import json
 
 app = FastAPI()
 
-def get_gcs_client():
-    creds_info = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
-    creds = service_account.Credentials.from_service_account_info(creds_info)
-    return storage.Client(credentials=creds)
+@app.get("/")
+def health_check():
+    return {"status": "ok"}
 
-client = get_gcs_client()
-BUCKET_NAME = "smk_main_home"
+# Cloud Run 서비스 계정으로 자동 인증 (방법 B)
+client = storage.Client()
+BUCKET_NAME = "smk_main_home2"
 bucket = client.bucket(BUCKET_NAME)
 
-# 2. 데이터 모델 정의
 class Movie(BaseModel):
     id: int
     title: str
@@ -32,12 +29,11 @@ class Review(BaseModel):
     content: str
     score: int
 
-# 3. GCP 파일 읽기/쓰기 헬퍼 함수
 def save_to_gcs(filename: str, data: list):
     blob = bucket.blob(filename)
     blob.upload_from_string(
         data=json.dumps(data, ensure_ascii=False),
-        content_type='application/json'
+        content_type="application/json",
     )
 
 def load_from_gcs(filename: str) -> list:
@@ -46,7 +42,6 @@ def load_from_gcs(filename: str) -> list:
         return []
     return json.loads(blob.download_as_text())
 
-# 4. API 엔드포인트
 @app.get("/movies", response_model=List[Movie])
 def get_movies():
     return load_from_gcs("movies.json")
@@ -61,8 +56,7 @@ def add_movie(movie: Movie):
 @app.get("/movies/{movie_id}/reviews", response_model=List[Review])
 def get_reviews(movie_id: int):
     all_reviews = load_from_gcs("reviews.json")
-    # 해당 영화 ID에 맞는 리뷰만 필터링
-    return [r for r in all_reviews if r['movie_id'] == movie_id]
+    return [r for r in all_reviews if r["movie_id"] == movie_id]
 
 @app.post("/reviews")
 def add_review(review: Review):

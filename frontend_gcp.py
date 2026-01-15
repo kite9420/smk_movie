@@ -3,10 +3,7 @@ from fastapi import FastAPI
 import requests
 from PIL import Image
 from datetime import date
-import subprocess
-import time
-import os
-import json
+
 
 
 
@@ -32,34 +29,6 @@ import json
 #중간에 Fast_api 서버가 꺼지더라도 현재 캐싱이 사라지지 않도록 구현
 
 
-# =========================
-# 백엔드 서버 자동 실행 로직
-# =========================
-@st.cache_resource # 앱이 실행될 때 딱 한 번만 실행되도록 캐싱
-def start_backend():
-    # 백엔드 파일 경로 (프로젝트 구조에 따라 "backend/main.py" 등으로 수정 필요)
-    backend_path = "backend/main_gcp.py" 
-    
-    if os.path.exists(backend_path):
-        # uvicorn을 백그라운드 프로세스로 실행
-        proc = subprocess.Popen(
-    ["python", "-m", "uvicorn", "backend.main_gcp:app", "--host", "127.0.0.1", "--port", "8000"],
-    env={
-        **os.environ,
-        "GCP_SERVICE_ACCOUNT": json.dumps(st.secrets["gcp_service_account"])
-    },
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE
-)
-        # 서버가 완전히 뜰 때까지 잠시 대기
-        time.sleep(10)
-        return proc
-    return None
-
-# 서버 시작
-backend_process = start_backend()
-
-
 st.set_page_config(layout="wide", page_title="스프린트 미션 18 영화 평점 사이트")
 st.title("🎬 영화 평점")
 
@@ -68,7 +37,7 @@ st.title("🎬 영화 평점")
 # FastAPI 연동 함수
 # =========================
 
-BASE_API_URL = "http://127.0.0.1:8000/" #로컬과 다른 차이점
+BASE_API_URL = "https://smk-main-api-1060166419887.asia-northeast3.run.app" #로컬과 다른 차이점
 
 def get_reviews_api(movie_id):
     try:

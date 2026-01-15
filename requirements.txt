@@ -1,6 +1,3 @@
 streamlit
-fastapi
-uvicorn
-google-cloud-storage
-google-auth
 requests
+pillow
