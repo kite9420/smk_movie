@@ -173,7 +173,7 @@ else:
             st.markdown(f"감독: {movie['director']}")
             st.markdown(f"장르: {movie['genre']}")
 
-            btn_col1, btn_col2, btn_col3,btn_col4, _ = st.columns([1, 1, 1, 1, 12]) 
+            btn_col1, btn_col2, btn_col3,btn_col4, _ = st.columns([1, 1, 1, 1, 10]) 
 
             with btn_col1:
                 if st.button("리뷰 보기", key=f"view_{movie['id']}"):
