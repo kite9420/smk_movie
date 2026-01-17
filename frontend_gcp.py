@@ -240,11 +240,12 @@ else:
                         st.markdown(f"**작성자:** {review['author']}")
                         st.markdown(f"**내용:** {review['content']}")
                         st.markdown(f"**평점:** ⭐ {review['score']}")
-                        st.divider()
                         if st.button("리뷰 삭제", key=f"delete_rev_{review['id']}"):
                             requests.delete(f"{BASE_API_URL}reviews/{review['id']}")
                             st.session_state[f"reviews_{movie['id']}"] = get_reviews_api(movie['id'])
                             st.rerun()
+                        st.divider()
+
 
 
 
