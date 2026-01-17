@@ -49,9 +49,11 @@ def get_reviews_api(movie_id):
 def save_movie_api(movie):
     try:
         response = requests.post(f"{BASE_API_URL}movies", json=movie, timeout=5)
-        return response.status_code == 200
+        if response.status_code != 200:
+            return None
+        return response.json().get("id")
     except:
-        return False
+        return None
 
 def get_movies_api():
     try:
@@ -63,16 +65,23 @@ def get_movies_api():
         # FastAPI가 꺼져 있거나 네트워크 오류
         return None
     
+
 def save_review_api(movie_id, author, content, score):
     review_data = {
-        "movie_id": movie_id, # 여기서 영화 ID를 할당!
+        "movie_id": movie_id,
         "author": author,
         "content": content,
         "score": score
     }
     # POST로 백엔드 /reviews에 저장
-    requests.post(f"{BASE_API_URL}reviews", json=review_data, timeout=5)
-
+    try:
+        response = requests.post(f"{BASE_API_URL}reviews", json=review_data, timeout=5)
+        if response.status_code != 200:
+            return None
+        return response.json().get("id")
+    except:
+        return None
+        
 
 # =========================
 # 상태 변수 초기화
@@ -117,7 +126,6 @@ if st.session_state.show_add_form:
     if st.button("저장"):
         if movie_title and movie_poster_url and movie_director and movie_genre:
             movie = {
-                "id": len(st.session_state.movies) + 1,
                 "title": movie_title,
                 "poster_url": movie_poster_url,
                 "release_date": str(movie_release_date),
@@ -165,7 +173,7 @@ else:
             st.markdown(f"감독: {movie['director']}")
             st.markdown(f"장르: {movie['genre']}")
 
-            btn_col1, btn_col2, btn_col3, _ = st.columns([1, 1, 1, 12]) 
+            btn_col1, btn_col2, btn_col3,btn_col4, _ = st.columns([1, 1, 1, 1, 12]) 
 
             with btn_col1:
                 if st.button("리뷰 보기", key=f"view_{movie['id']}"):
@@ -215,6 +223,11 @@ else:
                     # 보관함을 최신 API 결과로 덮어씌웁니다.
                     st.session_state[f"reviews_{movie['id']}"] = get_reviews_api(movie['id'])
                     st.toast(f"'{movie['title']}' 리뷰 갱신 완료!") # 갱신 알림 (선택 사항)
+            with btn_col4:
+                if st.button("영화 삭제", key=f"delete_{movie['id']}"):
+                    requests.delete(f"{BASE_API_URL}movies/{movie['id']}")
+                    st.session_state.movies = get_movies_api()
+                    st.rerun()
               
             if st.session_state[key]:
                 st.subheader("영화 리뷰")
@@ -223,10 +236,16 @@ else:
                     st.info("등록된 리뷰가 없습니다")
                 else:
                     for review in current_reviews:
+                        st.markdown(f"**리뷰ID:** {review['id']}")
                         st.markdown(f"**작성자:** {review['author']}")
                         st.markdown(f"**내용:** {review['content']}")
                         st.markdown(f"**평점:** ⭐ {review['score']}")
                         st.divider()
+                        if st.button("리뷰 삭제", key=f"delete_rev_{review['id']}"):
+                            requests.delete(f"{BASE_API_URL}reviews/{review['id']}")
+                            st.session_state[f"reviews_{movie['id']}"] = get_reviews_api(movie['id'])
+                            st.rerun()
+
 
 
 
