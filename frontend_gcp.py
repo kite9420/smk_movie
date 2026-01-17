@@ -1,5 +1,4 @@
 import streamlit as st
-from fastapi import FastAPI
 import requests
 from PIL import Image
 from datetime import date
