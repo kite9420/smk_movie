@@ -120,33 +120,3 @@ def delete_movie(movie_id: int):
 
     return {"message": "영화 및 해당 리뷰 삭제 완료"}
 
-
-@app.post("/migrate/movies")
-def migrate_movies():
-    movies = load_from_gcs("movies.json")
-
-    next_id = 1
-    for m in movies:
-        if "id" not in m:
-            m["id"] = next_id
-            next_id += 1
-        else:
-            next_id = max(next_id, m["id"] + 1)
-
-    save_to_gcs("movies.json", movies)
-    return {"message": "movies migration done", "count": len(movies)}
-
-@app.post("/migrate/reviews")
-def migrate_reviews():
-    reviews = load_from_gcs("reviews.json")
-
-    next_id = 1
-    for r in reviews:
-        if "id" not in r:
-            r["id"] = next_id
-            next_id += 1
-        else:
-            next_id = max(next_id, r["id"] + 1)
-
-    save_to_gcs("reviews.json", reviews)
-    return {"message": "reviews migration done", "count": len(reviews)}
