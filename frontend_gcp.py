@@ -227,6 +227,7 @@ else:
                 if st.button("영화 삭제", key=f"delete_{movie['id']}"):
                     requests.delete(f"{BASE_API_URL}movies/{movie['id']}")
                     st.session_state.movies = get_movies_api()
+                    st.session_state.pop(f"reviews_{movie['id']}", None)
                     st.rerun()
               
             if st.session_state[key]:
