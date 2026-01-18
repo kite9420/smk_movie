@@ -206,7 +206,8 @@ else:
                     if st.button("리뷰 저장", key=f"save_rev_{movie['id']}"):
                         if author and content and score:
                             # 1. API 호출 
-                            save_review_api(movie['id'], author, content, score)
+                            save_review_api(movie['id'], author, content, score, password)
+
                             
                             # 2. 세션 스테이트의 해당 영화 리뷰 목록 즉시 갱신 (캐싱 업데이트)
                             st.session_state[f"reviews_{movie['id']}"] = get_reviews_api(movie['id'])
@@ -223,13 +224,6 @@ else:
                     # 보관함을 최신 API 결과로 덮어씌웁니다.
                     st.session_state[f"reviews_{movie['id']}"] = get_reviews_api(movie['id'])
                     st.toast(f"'{movie['title']}' 리뷰 갱신 완료!") # 갱신 알림 (선택 사항)
-            with btn_col4:
-                del_pw = st.text_input("삭제 비밀번호", type="password", key=f"del_pw_movie_{movie['id']}")
-                if st.button("영화 삭제", key=f"delete_{movie['id']}"):
-                    requests.delete(f"{BASE_API_URL}movies/{movie['id']}", json={"password": del_pw}, timeout=5)
-                    st.session_state.movies = get_movies_api()
-                    st.session_state.pop(f"reviews_{movie['id']}", None)
-                    st.rerun()
 
             with btn_col4:
                 del_pw = st.text_input("삭제 비밀번호", type="password", key=f"del_pw_movie_{movie['id']}")
