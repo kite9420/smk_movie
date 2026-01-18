@@ -171,6 +171,8 @@ else:
             st.markdown(f"개봉일: {movie['release_date']}")
             st.markdown(f"감독: {movie['director']}")
             st.markdown(f"장르: {movie['genre']}")
+            del_pw = st.text_input("삭제 비밀번호", type="password", key=f"del_pw_movie_{movie['id']}")
+
 
             btn_col1, btn_col2, btn_col3,btn_col4, _ = st.columns([1, 1, 1, 1, 10]) 
 
@@ -226,8 +228,6 @@ else:
                     st.toast(f"'{movie['title']}' 리뷰 갱신 완료!") # 갱신 알림 (선택 사항)
 
             with btn_col4:
-                del_pw = st.text_input("삭제 비밀번호", type="password", key=f"del_pw_movie_{movie['id']}")
-
                 if st.button("영화 삭제", key=f"delete_{movie['id']}"):
                     headers = {}
                     body = {}
