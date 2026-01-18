@@ -75,6 +75,15 @@ def save_review_api(movie_id, author, content, score, password):
     }
     response = requests.post(f"{BASE_API_URL}reviews", json=review_data, timeout=5)
     return response.json().get("id") if response.status_code == 200 else None
+
+def safe_show_image(url: str, width=150):
+    if not url:
+        st.warning("포스터 URL이 비어있습니다.")
+        return
+    try:
+        st.image(url, width=width)
+    except Exception:
+        st.warning("포스터 이미지를 불러올 수 없습니다. URL을 확인하세요.")
         
 
 # =========================
@@ -164,7 +173,7 @@ else:
         col1, col2 = st.columns([1, 3])
 
         with col1:
-            st.image(movie["poster_url"], width=150)
+            safe_show_image(movie.get("poster_url", ""), width=150)
 
         with col2:
             st.markdown(f"**제목:** {movie['title']}")
@@ -274,7 +283,7 @@ else:
                             body = {}
 
                             # 관리자 토큰이 있으면 관리자 삭제
-                            if "ADMIN_PIN" in st.secrets and del_pw == st.secrets["ADMIN_PIN"]:
+                            if "ADMIN_PIN" in st.secrets and del_rpw == st.secrets["ADMIN_PIN"]:
                                 headers["X-Admin-Token"] = st.secrets["ADMIN_TOKEN"]
                                 body = {}
                             else:
