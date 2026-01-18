@@ -233,8 +233,9 @@ else:
                     body = {}
 
                     # 관리자 토큰이 있으면: 헤더로 관리자 삭제 (비번 불필요)
-                    if "ADMIN_TOKEN" in st.secrets and st.secrets["ADMIN_TOKEN"]:
+                    if "ADMIN_PIN" in st.secrets and del_pw == st.secrets["ADMIN_PIN"]:
                         headers["X-Admin-Token"] = st.secrets["ADMIN_TOKEN"]
+                        body = {}
                     else:
                         # 일반 사용자: 비번 필요
                         body = {"password": del_pw}
@@ -273,8 +274,9 @@ else:
                             body = {}
 
                             # 관리자 토큰이 있으면 관리자 삭제
-                            if "ADMIN_TOKEN" in st.secrets and st.secrets["ADMIN_TOKEN"]:
+                            if "ADMIN_PIN" in st.secrets and del_pw == st.secrets["ADMIN_PIN"]:
                                 headers["X-Admin-Token"] = st.secrets["ADMIN_TOKEN"]
+                                body = {}
                             else:
                                 # 일반 사용자 삭제
                                 body = {"password": del_rpw}
