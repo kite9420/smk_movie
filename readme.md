@@ -28,7 +28,7 @@
 ### Backend
 - **FastAPI**
   - 영화 및 리뷰 CRUD REST API 제공
-  - ID 자동 생성 로직
+  - 영화 및 리뷰 ID 자동 생성 로직
   - 사용자 비밀번호 기반 삭제 권한 검증
   - 관리자 토큰 기반 관리자 삭제 처리
 
@@ -50,7 +50,8 @@
   - 관리자 토큰: Cloud Run 환경변수
   - 관리자 PIN: Streamlit Secrets
 
-## <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/6fd82df1-c335-4197-af51-c32cd6578bab" />
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/dccbfd56-7e6f-4a21-b800-c83c2e2a575f" />
+
 
 ## 🧱 전체 아키텍처 다이어그램
 
@@ -66,3 +67,7 @@ flowchart TD
   R --- ENV["Cloud Run Env\nADMIN_TOKEN"]
   R --- SA["Cloud Run Service Account\nADC Authentication"]
 ```
+
+## Future contents
+ - ** LLM을 이용한 게시글 및 이미지 URL 사전 검사 기능 **
+ - ** 오작동 조건 확인 및 예외처리 **
