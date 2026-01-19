@@ -16,33 +16,41 @@
 
 ---
 
-## 🛠 기술 스택
+## 🧰 Architecture & Tools
+
+본 서비스는 프론트엔드–백엔드–클라우드 스토리지를 명확히 분리한 구조로 설계되었습니다.
 
 ### Frontend
 - **Streamlit**
-  - 사용자 UI 렌더링
+  - 사용자 인터페이스(UI) 구성
   - FastAPI 백엔드와 REST API 통신
-  - 세션 상태(`st.session_state`) 기반 캐싱
-  - Streamlit Secrets를 통한 민감 정보 관리
+  - 세션 상태(`st.session_state`)를 활용한 캐싱
+  - Streamlit Secrets를 통한 관리자 PIN 등 민감 정보 관리
 
 ### Backend
 - **FastAPI**
-  - 영화 / 리뷰 CRUD API
-  - ID 자동 생성
-  - 비밀번호 기반 삭제 권한 검증
-  - 관리자 권한 처리
+  - 영화 및 리뷰 CRUD REST API 제공
+  - ID 자동 생성 로직
+  - 사용자 비밀번호 기반 삭제 권한 검증
+  - 관리자 토큰 기반 관리자 삭제 처리
 
-### Cloud & Storage
-- **Google Cloud Storage (GCS)**
-  - JSON 파일 기반 영구 데이터 저장
+### Cloud Platform
 - **Google Cloud Run**
-  - FastAPI 컨테이너 배포 및 운영
+  - FastAPI 백엔드 컨테이너 배포
+  - 서버 관리 없이 자동 확장되는 서버리스 환경
+  - 환경변수(`ADMIN_TOKEN`)를 통한 관리자 권한 관리
 
-### Security
-- **Service Account (ADC)**
-  - Cloud Run 런타임 자동 인증
+- **Google Cloud Storage (GCS)**
+  - movies.json / reviews.json 저장
+  - JSON 파일 기반 영구 데이터 보관
+  - 서버 재시작·재배포 시에도 데이터 유지
+
+### Authentication & Security
+- **GCP Service Account (ADC)**
+  - Cloud Run 런타임에서 자동 인증
 - **Secrets / Environment Variables**
-  - 관리자 토큰, 관리자 PIN 분리 관리
+  - 관리자 토큰: Cloud Run 환경변수
+  - 관리자 PIN: Streamlit Secrets
 
 ---
 
