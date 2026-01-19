@@ -14,8 +14,6 @@
 백엔드는 **Google Cloud Run**에 배포하여  
 실제 운영 환경과 유사한 아키텍처를 구성했습니다.
 
----
-
 ## 🧰 Architecture & Tools
 
 본 서비스는 프론트엔드–백엔드–클라우드 스토리지를 명확히 분리한 구조로 설계되었습니다.
@@ -52,22 +50,19 @@
   - 관리자 토큰: Cloud Run 환경변수
   - 관리자 PIN: Streamlit Secrets
 
----
 ## <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/6fd82df1-c335-4197-af51-c32cd6578bab" />
 
 ## 🧱 전체 아키텍처 다이어그램
 
 ```mermaid
 flowchart TD
-  U[User Browser] -->|HTTPS| S[Streamlit Cloud<br/>Frontend]
+  U["User Browser"] -->|HTTPS| S["Streamlit Cloud\nFrontend"]
 
-  S -->|REST API<br/>GET / POST / DELETE| R[Cloud Run<br/>FastAPI Backend]
+  S -->|REST API\nGET / POST / DELETE| R["Cloud Run\nFastAPI Backend"]
 
-  R -->|Google Cloud Storage Client| G[(GCS Bucket<br/>movies.json<br/>reviews.json)]
+  R -->|Google Cloud Storage Client| G[(GCS Bucket\nmovies.json\nreviews.json)]
 
-  S --- SS[Streamlit Secrets<br/>ADMIN_PIN]
-  R --- ENV[Cloud Run Env<br/>ADMIN_TOKEN]
-  R --- SA[Cloud Run Service Account<br/>ADC Authentication]
-
----
-
+  S --- SS["Streamlit Secrets\nADMIN_PIN"]
+  R --- ENV["Cloud Run Env\nADMIN_TOKEN"]
+  R --- SA["Cloud Run Service Account\nADC Authentication"]
+```
