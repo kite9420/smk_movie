@@ -54,6 +54,7 @@
 
 ---
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/6fd82df1-c335-4197-af51-c32cd6578bab" />
+---
 
 ## 🧱 전체 아키텍처 다이어그램
 
