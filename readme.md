@@ -59,15 +59,12 @@
 ---
 ## 🧱 전체 아키텍처 다이어그램
 
-```mermaid
 flowchart TD
   U[User Browser] -->|HTTPS| S[Streamlit Cloud<br/>Frontend]
+  S -->|REST API (HTTPS)<br/>GET/POST/DELETE| R[Cloud Run<br/>FastAPI Backend]
+  R -->|Google Cloud Storage Client| G[(GCS Bucket<br/>movies.json / reviews.json)]
 
-  S -->|REST API<br/>GET / POST / DELETE| R[Cloud Run<br/>FastAPI Backend]
-
-  R -->|Google Cloud Storage Client| G[(GCS Bucket<br/>movies.json<br/>reviews.json)]
-
-  S --- SS[Streamlit Secrets<br/>ADMIN_PIN]
+  S --- SS[Streamlit Secrets<br/>ADMIN_TOKEN, ADMIN_PIN]
   R --- ENV[Cloud Run Env<br/>ADMIN_TOKEN]
-  R --- SA[Cloud Run Service Account<br/>ADC Authentication]
+  R --- SA[Cloud Run Service Account<br/>ADC Auth]
 ---
