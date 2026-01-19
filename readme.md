@@ -58,6 +58,7 @@
 
 ---
 ## 🧱 전체 아키텍처 다이어그램
+
 ```mermaid
 flowchart TD
   U[User Browser] -->|HTTPS| S[Streamlit Cloud<br/>Frontend]
