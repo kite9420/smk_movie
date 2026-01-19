@@ -58,7 +58,6 @@
 
 ---
 ## 🧱 전체 아키텍처 다이어그램
-
 ```mermaid
 flowchart TD
   U[User Browser] -->|HTTPS| S[Streamlit Cloud<br/>Frontend]
@@ -70,5 +69,4 @@ flowchart TD
   S --- SS[Streamlit Secrets<br/>ADMIN_PIN]
   R --- ENV[Cloud Run Env<br/>ADMIN_TOKEN]
   R --- SA[Cloud Run Service Account<br/>ADC Authentication]
-
 ---
