@@ -60,9 +60,9 @@
 
 
 ## Future contents
- - ** LLM을 이용한 게시글 및 이미지 URL 사전 검사 기능 **
- - ** 오작동 조건 확인 및 예외처리 **
- - ** 더 나은 UI / UX 구현
+ - **LLM을 이용한 게시글 및 이미지 URL 사전 검사 기능**
+ - **오작동 조건 확인 및 예외처리**
+ - **더 나은 UI / UX 구현**
 
 ## Screenshot
 <img width="2489" height="1285" alt="image" src="https://github.com/user-attachments/assets/92dce47e-29c9-4309-bdf9-91c28154c3a1" />
