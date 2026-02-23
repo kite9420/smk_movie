@@ -54,7 +54,8 @@
 
 
 ## 🧱 전체 아키텍처 다이어그램
-<img width="733" height="551" alt="image" src="https://github.com/user-attachments/assets/c75f0223-9136-4311-80a9-46037d392af5" />
+<img width="717" height="514" alt="image" src="https://github.com/user-attachments/assets/b394bbb2-a13b-4a18-9640-0188bb5db6bd" />
+
 
 
 
