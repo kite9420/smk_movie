@@ -54,19 +54,9 @@
 
 
 ## 🧱 전체 아키텍처 다이어그램
+<img width="733" height="551" alt="image" src="https://github.com/user-attachments/assets/c75f0223-9136-4311-80a9-46037d392af5" />
 
-```mermaid
-flowchart TD
-  U["User Browser"] -->|HTTPS| S["Streamlit Cloud\nFrontend"]
 
-  S -->|REST API\nGET / POST / DELETE| R["Cloud Run\nFastAPI Backend"]
-
-  R -->|Google Cloud Storage Client| G[(GCS Bucket\nmovies.json\nreviews.json)]
-
-  S --- SS["Streamlit Secrets\nADMIN_PIN"]
-  R --- ENV["Cloud Run Env\nADMIN_TOKEN"]
-  R --- SA["Cloud Run Service Account\nADC Authentication"]
-```
 
 ## Future contents
  - ** LLM을 이용한 게시글 및 이미지 URL 사전 검사 기능 **
