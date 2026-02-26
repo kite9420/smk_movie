@@ -1,5 +1,10 @@
 # 🎬 개인프로젝트: 영화 리뷰 서비스 (GCP 연동형)
 
+## Screenshot
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/92dce47e-29c9-4309-bdf9-91c28154c3a1" />
+  
+
 ## 📌 프로젝트 개요
 
 본 프로젝트는 로컬 파일 저장 방식의 한계를 극복하고,  
@@ -63,7 +68,4 @@
  - **LLM을 이용한 게시글 및 이미지 URL 사전 검사 기능**
  - **오작동 조건 확인 및 예외처리**
  - **더 나은 UI / UX 구현**
-
-## Screenshot
-<img width="2489" height="1285" alt="image" src="https://github.com/user-attachments/assets/92dce47e-29c9-4309-bdf9-91c28154c3a1" />
 
